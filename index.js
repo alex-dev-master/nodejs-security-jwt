@@ -3,7 +3,7 @@ const express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
     {verify} = require('./modules/middleware'),
-    {login} = require('./modules/authentication'),
+    {login, refresh} = require('./modules/authentication'),
     {user} = require('./modules/user')
 
 const host = '127.0.0.1'
@@ -13,6 +13,7 @@ app.use(bodyParser.json())
 app.use(verify)
 
 app.post('/api/auth', login)
+app.post('/api/refresh', refresh)
 
 app.get('/user', user)
 
