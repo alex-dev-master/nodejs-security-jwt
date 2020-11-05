@@ -1,12 +1,21 @@
 require('dotenv').config()
-const express = require('express')
-const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
-const app = express()
+const express = require('express'),
+    app = express(),
+    bodyParser = require('body-parser'),
+    {verify} = require('./modules/middleware'),
+    {login} = require('./modules/authentication'),
+    {user} = require('./modules/user')
 
-const {login, refresh} = require('./authentication')
+const host = '127.0.0.1'
+const port = 7000
+
 app.use(bodyParser.json())
-app.use(cookieParser())
+app.use(verify)
 
-app.post('/login', login)
-app.post('/refresh', refresh)
+app.post('/api/auth', login)
+
+app.get('/user', user)
+
+app.listen(port, host, () =>
+    console.log(`Server listens http://${host}:${port}`)
+)
