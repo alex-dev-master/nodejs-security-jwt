@@ -10,7 +10,10 @@ exports.login = (req, res) => {
             req.body.login === user.login &&
             req.body.password === user.password
         ) {
-            const refreshToken = uuidv4();
+            const refreshToken = jwt.sign({ id: user.id }, process.env.REFRESH_TOKEN_SECRET, {
+                algorithm: "HS256",
+                expiresIn: process.env.REFRESH_TOKEN_LIFE
+            });
             refreshTokens[refreshToken] = user.login;
 
             return res.status(200).json({
@@ -32,7 +35,14 @@ exports.refresh = (req, res) => {
     const login = req.body.login
     const refreshToken = req.body.refreshToken
     console.log(refreshTokens);
-    if((refreshToken in refreshTokens) && (refreshTokens[refreshToken] == login)) {
+    if(
+        (refreshToken in refreshTokens) &&
+        (refreshTokens[refreshToken] == login) &&
+        jwt.verify(
+            refreshToken,
+            process.env.REFRESH_TOKEN_SECRET
+        )
+    ) {
         for (let user of users) {
             if (user.login == login) {
                 return res.status(200).json({
@@ -40,7 +50,7 @@ exports.refresh = (req, res) => {
                     login: user.login,
                     token: jwt.sign({ id: user.id, refreshToken: refreshTokens }, process.env.ACCESS_TOKEN_SECRET, {
                         algorithm: "HS256",
-                        expiresIn: process.env.REFRESH_TOKEN_LIFE
+                        expiresIn: process.env.ACCESS_TOKEN_LIFE
                     }),
                     refreshToken: refreshToken
                 })
