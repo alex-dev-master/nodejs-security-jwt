@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken')
 const users = require('../users')
-const { v4: uuidv4 } = require('uuid');
 
 const refreshTokens = {}
 
