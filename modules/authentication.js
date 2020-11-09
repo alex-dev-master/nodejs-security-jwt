@@ -33,7 +33,7 @@ exports.login = (req, res) => {
 exports.refresh = (req, res) => {
     const login = req.body.login
     const refreshToken = req.body.refreshToken
-    console.log(refreshTokens);
+    // console.log(refreshTokens);
     if(
         (refreshToken in refreshTokens) &&
         (refreshTokens[refreshToken] == login) &&

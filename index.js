@@ -20,3 +20,5 @@ app.get('/user', user)
 app.listen(port, host, () =>
     console.log(`Server listens http://${host}:${port}`)
 )
+
+module.exports = app
