@@ -6,8 +6,8 @@ const express = require('express'),
     {login, refresh} = require('./modules/authentication'),
     {user} = require('./modules/user')
 
-const host = '127.0.0.1'
-const port = 7000
+const host = '0.0.0.0'
+const port = 8080
 
 app.use(bodyParser.json())
 app.use(verify)
